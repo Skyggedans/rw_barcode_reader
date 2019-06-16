@@ -10,7 +10,7 @@ import io.flutter.plugin.common.MethodChannel.Result
 import io.flutter.plugin.common.PluginRegistry.Registrar
 
 
-class PluginActivity : Activity() {
+class BarcodeReaderPluginActivity : Activity() {
     private val BARCODE_REQUEST = 1984
     private val ACTION_BARCODE = "com.realwear.barcodereader.intent.action.SCAN_BARCODE"
     private val EXTRA_RESULT = "com.realwear.barcodereader.intent.extra.RESULT"
@@ -40,7 +40,7 @@ class PluginActivity : Activity() {
 
 class RwBarcodeReaderPlugin(private val activity: Activity) : MethodCallHandler {
     companion object {
-        private const val CHANNEL = "com.rockwellits.rw_plugins/rw_barcode_reader";
+        private const val CHANNEL = "com.rockwellits.rw_plugins/rw_barcode_reader"
         private lateinit var channel: MethodChannel
         private lateinit var methodResult: Result
 
@@ -58,7 +58,7 @@ class RwBarcodeReaderPlugin(private val activity: Activity) : MethodCallHandler 
 
     override fun onMethodCall(call: MethodCall, result: Result) {
         if (call.method == "scanBarcode") {
-            val intent = Intent(activity, PluginActivity::class.java)
+            val intent = Intent(activity, BarcodeReaderPluginActivity::class.java)
 
             methodResult = result
             activity.startActivity(intent)

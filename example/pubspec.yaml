@@ -1,5 +1,7 @@
 name: rw_barcode_reader_example
 description: Demonstrates how to use the rw_barcode_reader plugin
+author: Andrei Klaptsov <skyggedanser@gmail.com>
+homepage: https://github.com/Skyggedans/rw_barcode_reader
 publish_to: 'none'
 
 environment:

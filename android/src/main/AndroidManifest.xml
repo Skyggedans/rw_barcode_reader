@@ -2,6 +2,6 @@
     package="com.rockwellits.rw_plugins">
 
     <application>
-        <activity android:name="com.rockwellits.rw_plugins.PluginActivity"></activity>
+        <activity android:name="com.rockwellits.rw_plugins.BarcodeReaderPluginActivity"></activity>
     </application>
 </manifest>
