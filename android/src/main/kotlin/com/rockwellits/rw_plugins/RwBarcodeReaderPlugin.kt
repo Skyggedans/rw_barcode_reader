@@ -32,6 +32,8 @@ class BarcodeReaderPluginActivity : Activity() {
             }
 
             RwBarcodeReaderPlugin.onBarcodeResult(result)
+        } else {
+            RwBarcodeReaderPlugin.onBarcodeResult(null)
         }
 
         finish()
