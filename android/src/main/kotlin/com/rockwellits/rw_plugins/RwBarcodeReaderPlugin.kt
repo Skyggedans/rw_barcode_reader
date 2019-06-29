@@ -1,4 +1,4 @@
-package com.rockwellits.rw_plugins
+package com.rockwellits.rw_plugins.rw_barcode_reader
 
 import android.app.Activity
 import android.content.Intent
