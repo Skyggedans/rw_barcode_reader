@@ -3,6 +3,10 @@ package com.rockwellits.rw_plugins.rw_barcode_reader
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import androidx.annotation.NonNull
+import io.flutter.embedding.engine.plugins.FlutterPlugin
+import io.flutter.embedding.engine.plugins.activity.ActivityAware
+import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
@@ -40,16 +44,20 @@ class BarcodeReaderPluginActivity : Activity() {
     }
 }
 
-class RwBarcodeReaderPlugin(private val activity: Activity) : MethodCallHandler {
+class RwBarcodeReaderPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
+    lateinit var activity: Activity
+
     companion object {
         private const val CHANNEL = "com.rockwellits.rw_plugins/rw_barcode_reader"
-        private lateinit var channel: MethodChannel
         private lateinit var methodResult: Result
 
         @JvmStatic
         fun registerWith(registrar: Registrar) {
-            channel = MethodChannel(registrar.messenger(), CHANNEL)
-            channel.setMethodCallHandler(RwBarcodeReaderPlugin(registrar.activity()))
+            val channel = MethodChannel(registrar.messenger(), CHANNEL)
+            val plugin = RwBarcodeReaderPlugin()
+
+            plugin.activity = registrar.activity()
+            channel.setMethodCallHandler(plugin)
         }
 
         @JvmStatic
@@ -58,14 +66,38 @@ class RwBarcodeReaderPlugin(private val activity: Activity) : MethodCallHandler 
         }
     }
 
-    override fun onMethodCall(call: MethodCall, result: Result) {
-        if (call.method == "scanBarcode") {
-            val intent = Intent(activity, BarcodeReaderPluginActivity::class.java)
+    override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
+        val channel = MethodChannel(flutterPluginBinding.getFlutterEngine().getDartExecutor(), CHANNEL)
 
-            methodResult = result
-            activity.startActivity(intent)
-        } else {
-            result.notImplemented()
+        channel.setMethodCallHandler(this)
+    }
+
+    override fun onMethodCall(call: MethodCall, result: Result) {
+        when (call.method) {
+            "scanBarcode" -> {
+                val intent = Intent(activity, BarcodeReaderPluginActivity::class.java)
+
+                methodResult = result
+                activity.startActivity(intent)
+            }
+            else ->
+                result.notImplemented()
         }
+    }
+
+    override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
+    }
+
+    override fun onAttachedToActivity(binding: ActivityPluginBinding) {
+        this.activity = binding.activity
+    }
+
+    override fun onDetachedFromActivity() {
+    }
+
+    override fun onDetachedFromActivityForConfigChanges() {
+    }
+
+    override fun onReattachedToActivityForConfigChanges(binding: ActivityPluginBinding) {
     }
 }

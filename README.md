@@ -1,6 +1,6 @@
 # rw_barcode_reader
 
-Bar Code Reader Plugin for RealWear HMT-1
+Bar Code Reader Plugin for RealWear HMT-1(Z1).
 
 ## Usage
 
